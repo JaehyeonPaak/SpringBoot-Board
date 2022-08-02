@@ -10,7 +10,6 @@
     </tr>
     </thead>
     <tbody>
-
         <tr>
             <th>{{id}}</th>
             <td>{{title}}</td>
@@ -20,7 +19,16 @@
     {{/article}}
 </table>
 
-<a href="/articles">Home</a>
-<a href="/articles/edit/{{article.id}}">Edit</a>
+<button>
+    <a href="/articles">Home</a>
+</button>
+
+<button>
+    <a href="/articles/edit/{{article.id}}">Edit</a>
+</button>
+
+<button>
+    <a href="/articles/delete/{{article.id}}">Delete</a>
+</button>
 
 {{>layouts/footer}}

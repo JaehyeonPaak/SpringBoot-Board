@@ -101,4 +101,19 @@ public class ArticleController {
         return "redirect:/articles/" + articleEntity.getId();
     }
 
+    @GetMapping("/articles/delete/{id}")
+    public String delete(@PathVariable Long id) {
+
+        // 1. find the data from DB by id
+        Article target = articleRepository.findById(id).orElse(null);
+
+        // 2. delete the data using Repository
+        if(target != null) {
+            articleRepository.delete(target);
+        }
+
+        // 3. set a view
+        return "redirect:/articles";
+    }
+
 }
