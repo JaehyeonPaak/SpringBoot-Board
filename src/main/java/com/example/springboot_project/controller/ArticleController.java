@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -82,15 +83,12 @@ public class ArticleController {
 
     @PostMapping("/articles/update")
     public String update(ArticleForm form, Model model) {
-        log.info(form.toString());
 
         // 1. convert DTO to Entity
         Article articleEntity = form.toEntity();
-        log.info(articleEntity.toString());
 
         // 2. find the data from DB by id
         Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
-        log.info(target.toString());
 
         // 3. update the data in DB via JPA
         if(target != null) {
@@ -102,7 +100,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id, RedirectAttributes rttr) {
 
         // 1. find the data from DB by id
         Article target = articleRepository.findById(id).orElse(null);
@@ -112,7 +110,11 @@ public class ArticleController {
             articleRepository.delete(target);
         }
 
-        // 3. set a view
+        // 3. add alerting message
+        String message = "The article has been deleted!";
+        rttr.addFlashAttribute( "msg", message);
+
+        // 4. set a view
         return "redirect:/articles";
     }
 
