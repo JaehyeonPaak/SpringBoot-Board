@@ -37,7 +37,7 @@ public class ArticleController {
         Article saved = articleRepository.save(article);
         log.info(saved.toString());
 
-        return "";
+        return "redirect:/articles/" + saved.getId();
     }
 
     @GetMapping("/articles/{id}")
@@ -65,6 +65,18 @@ public class ArticleController {
 
         // 3. set a view page
         return "articles/index";
+    }
+
+    @GetMapping("/articles/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+
+        // 1. find data to edit from Repository
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+
+        // 2. register the data in a model
+        model.addAttribute("article", articleEntity);
+
+        return "articles/edit";
     }
 
 }

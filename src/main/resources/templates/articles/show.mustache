@@ -1,6 +1,7 @@
 {{>layouts/header}}
 
 <table class="table">
+    {{#article}}
     <thead>
     <tr>
         <th scope="col">ID</th>
@@ -9,14 +10,17 @@
     </tr>
     </thead>
     <tbody>
-    {{#article}}
+
         <tr>
             <th>{{id}}</th>
             <td>{{title}}</td>
             <td>{{content}}</td>
         </tr>
-    {{/article}}
     </tbody>
+    {{/article}}
 </table>
+
+<a href="/articles">Home</a>
+<a href="/articles/edit/{{article.id}}">Edit</a>
 
 {{>layouts/footer}}
