@@ -6,7 +6,9 @@ import com.example.springboot_project.repository.ArticleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -25,7 +27,7 @@ public class ArticleController {
 
         log.info(form.toString());
 
-        // 1. Convert from to entity
+        // 1. Convert form to entity
         Article article = form.toEntity();
         log.info(article.toString());
 
@@ -34,5 +36,19 @@ public class ArticleController {
         log.info(saved.toString());
 
         return "";
+    }
+
+    @GetMapping("/articles/{id}")
+    public String show(@PathVariable Long id, Model model) {
+        log.info("id = " + id);
+
+        // 1. find data through Repository with id
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+
+        // 2. register the data in a model
+        model.addAttribute("article", articleEntity);
+
+        // 3. set a view page
+        return "articles/show";
     }
 }
