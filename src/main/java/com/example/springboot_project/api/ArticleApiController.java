@@ -31,11 +31,14 @@ public class ArticleApiController {
 
     // POST
     @PostMapping("/api/articles")
-    public Article create(@RequestBody ArticleDto dto) {
-        return articleService.create(dto);
+    public ResponseEntity<Article> create(@RequestBody ArticleDto dto) {
+        Article article = articleService.create(dto);
+        return article != null ?
+                ResponseEntity.status(HttpStatus.OK).body(article) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    // PATCH
+    // PUT
     @PutMapping("/api/articles/{id}")
     public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleDto dto) {
         Article article = articleService.update(id, dto);

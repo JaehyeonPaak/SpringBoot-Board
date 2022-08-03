@@ -26,7 +26,11 @@ public class ArticleService {
 
     public Article create(ArticleDto dto) {
         Article articleEntity = dto.toEntity();
-        return dto.getId() != null ? null : articleRepository.save(articleEntity);
+        //if JSON contains ID property, return error
+        if(dto.getId() != null) {
+            return null;
+        }
+        return articleRepository.save(articleEntity);
     }
 
     public Article update(Long id, ArticleDto dto) {
