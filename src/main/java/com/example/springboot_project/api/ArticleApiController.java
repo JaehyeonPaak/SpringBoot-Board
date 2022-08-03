@@ -2,7 +2,7 @@ package com.example.springboot_project.api;
 
 import com.example.springboot_project.dto.ArticleDto;
 import com.example.springboot_project.entity.Article;
-import com.example.springboot_project.repository.ArticleRepository;
+import com.example.springboot_project.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,48 +16,40 @@ import java.util.List;
 public class ArticleApiController {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleService articleService;
 
     // GET
     @GetMapping("/api/articles")
     public List<Article> index() {
-        return (List<Article>) articleRepository.findAll();
+        return articleService.index();
     }
 
     @GetMapping("/api/articles/{id}")
     public Article show(@PathVariable Long id) {
-        return articleRepository.findById(id).orElse(null);
+        return articleService.show(id);
     }
 
     // POST
     @PostMapping("/api/articles")
     public Article create(@RequestBody ArticleDto dto) {
-        Article articleEntity = dto.toEntity();
-        return articleRepository.save(articleEntity);
+        return articleService.create(dto);
     }
 
     // PATCH
     @PutMapping("/api/articles/{id}")
     public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleDto dto) {
-        Article target = articleRepository.findById(id).orElse(null);
-        Article articleEntity = dto.toEntity();
-        if(target != null && articleEntity.getId() == dto.getId()) {
-            target.put(articleEntity);
-            articleRepository.save(target);
-            return ResponseEntity.status(HttpStatus.OK).body(target);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        Article article = articleService.update(id, dto);
+        return (article != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(article) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     // DELETE
     @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Article> delete(@PathVariable Long id) {
-        Article target = articleRepository.findById(id).orElse(null);
-        if(target != null) {
-            articleRepository.delete(target);
-            return ResponseEntity.status(HttpStatus.OK).body(null);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return articleService.delete(id) != null ?
+                ResponseEntity.status(HttpStatus.OK).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build() ;
     }
 
 }
