@@ -23,4 +23,13 @@ public class Article {
 
     @Column
     private String content;
+
+    public void put(Article articleEntity) {
+        if(articleEntity.title != null) {
+            this.title = articleEntity.getTitle();
+        }
+        if(articleEntity.content != null) {
+            this.content = articleEntity.getContent();
+        }
+    }
 }
