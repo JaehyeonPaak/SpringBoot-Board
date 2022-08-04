@@ -1,5 +1,6 @@
 package com.example.springboot_project.api;
 
+import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.service.ArticleService;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class ArticleApiControllerTest {
 
     @Test
     void index_success() {
-        // given
+        // expected
         Article article1 = new Article(1L, "Billie eilish", "Happier than ever");
         Article article2 = new Article(2L, "Lana del rey", "Chemtrails over the country club");
         Article article3 = new Article(3L, "Lady gaga", "Hold my hand");
@@ -28,28 +29,51 @@ class ArticleApiControllerTest {
         articles.add(article2);
         articles.add(article3);
 
-        // when
+        // actual
         List<Article> articleList = articleService.index();
 
-        // then
+        // compare
         assertEquals(articles.toString(), articleList.toString());
     }
 
     @Test
     void show_success_idExist() {
-        //given
+        // expected
         Long id = 2L;
         Article article = new Article(id, "Lana del rey", "Chemtrails over the country club");
 
-        //when
+        // actual
         Article target = articleService.show(id);
 
-        //then
+        // compare
         assertEquals(article.toString(), target.toString());
     }
 
     @Test
-    void show_failed() {
+    void show_failed_idNotExist() {
+        // expected
+        Long id = -1L;
+        Article article = null;
 
+        // actual
+        Article target = articleService.show(id);
+
+        // compare
+        assertEquals(article, target);
+    }
+
+    @Test
+    void create_success_withoutId() {
+        // expected
+        String title = "Sarah";
+        String content = "Angel";
+        ArticleForm articleForm = new ArticleForm(null, title, content);
+        Article expected = new Article(4L, title, content);
+
+        // actual
+        Article target = articleService.create(articleForm);
+
+        // compare
+        assertEquals(expected.toString(), target.toString());
     }
 }

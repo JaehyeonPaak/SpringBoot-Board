@@ -1,6 +1,6 @@
 package com.example.springboot_project.api;
 
-import com.example.springboot_project.dto.ArticleDto;
+import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -32,16 +31,16 @@ public class ArticleApiController {
 
     // POST
     @PostMapping("/api/articles")
-    public ResponseEntity<List<Article>> create(@RequestBody List<ArticleDto> dtos) {
-        List<Article> articles = articleService.create(dtos);
-        return articles != null ?
-                ResponseEntity.status(HttpStatus.OK).body(articles) :
+    public ResponseEntity<Article> create(@RequestBody ArticleForm dto) {
+        Article article = articleService.create(dto);
+        return article != null ?
+                ResponseEntity.status(HttpStatus.OK).body(article) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     // PUT
     @PutMapping("/api/articles/{id}")
-    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleDto dto) {
+    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleForm dto) {
         Article article = articleService.update(id, dto);
         return (article != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(article) :

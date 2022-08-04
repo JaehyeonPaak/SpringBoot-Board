@@ -1,14 +1,11 @@
 package com.example.springboot_project.service;
 
-import com.example.springboot_project.dto.ArticleDto;
+import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,21 +22,15 @@ public class ArticleService {
         return articleRepository.findById(id).orElse(null);
     }
 
-    public List<Article> create(List<ArticleDto> dtos) {
-        List<Article> articles = new ArrayList<>();
-        for (ArticleDto articleDto : dtos) {
-            Article article = articleDto.toEntity();
-            articleRepository.save(article);
-            articles.add(article);
-            //if JSON contains ID property, return error
-            if (articleDto.getId() != null) {
-                return null;
-            }
+    public Article create(ArticleForm dto) {
+        Article article = dto.toEntity();
+        if (dto.getId() != null) {
+            return null;
         }
-        return articles;
+        return articleRepository.save(article);
     }
 
-    public Article update(Long id, ArticleDto dto) {
+    public Article update(Long id, ArticleForm dto) {
         Article target = articleRepository.findById(id).orElse(null);
         Article articleEntity = dto.toEntity();
         if(target != null && articleEntity.getId() == dto.getId()) {
@@ -58,10 +49,10 @@ public class ArticleService {
         return null;
     }
 
-//    public List<Article> createList(List<ArticleDto> dtos) {
+//    public List<Article> createList(List<ArticleForm> dtos) {
 //        List<Article> articles = new ArrayList<>();
-//        for (ArticleDto articleDto : dtos) {
-//            Article article = articleDto.toEntity();
+//        for (ArticleForm articleForm : dtos) {
+//            Article article = articleForm.toEntity();
 //            articleRepository.save(article);
 //            articles.add(article);
 //        }
