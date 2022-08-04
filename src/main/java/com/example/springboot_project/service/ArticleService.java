@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,5 +51,16 @@ public class ArticleService {
             return target;
         }
         return null;
+    }
+
+    public List<Article> createList(List<ArticleDto> dtos) {
+        List<Article> articles = new ArrayList<>();
+        for (ArticleDto articleDto : dtos) {
+            Article article = articleDto.toEntity();
+            articleRepository.save(article);
+            articles.add(article);
+        }
+        articleRepository.findById((long) -1).orElseThrow(() -> new IllegalArgumentException("Fail"));
+        return articles;
     }
 }

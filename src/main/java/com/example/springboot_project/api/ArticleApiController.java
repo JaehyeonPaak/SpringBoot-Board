@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -53,6 +54,17 @@ public class ArticleApiController {
         return articleService.delete(id) != null ?
                 ResponseEntity.status(HttpStatus.OK).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build() ;
+    }
+
+    //Transaction
+    @PostMapping("/api/transaction-test")
+    @Transactional
+    public ResponseEntity<List<Article>> transactionTest(@RequestBody List<ArticleDto> dtos) {
+        List<Article> articles = articleService.createList(dtos);
+
+        return (articles != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(articles) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 }
