@@ -25,13 +25,18 @@ public class ArticleService {
         return articleRepository.findById(id).orElse(null);
     }
 
-    public Article create(ArticleDto dto) {
-        Article articleEntity = dto.toEntity();
-        //if JSON contains ID property, return error
-        if(dto.getId() != null) {
-            return null;
+    public List<Article> create(List<ArticleDto> dtos) {
+        List<Article> articles = new ArrayList<>();
+        for (ArticleDto articleDto : dtos) {
+            Article article = articleDto.toEntity();
+            articleRepository.save(article);
+            articles.add(article);
+            //if JSON contains ID property, return error
+            if (articleDto.getId() != null) {
+                return null;
+            }
         }
-        return articleRepository.save(articleEntity);
+        return articles;
     }
 
     public Article update(Long id, ArticleDto dto) {
@@ -53,14 +58,14 @@ public class ArticleService {
         return null;
     }
 
-    public List<Article> createList(List<ArticleDto> dtos) {
-        List<Article> articles = new ArrayList<>();
-        for (ArticleDto articleDto : dtos) {
-            Article article = articleDto.toEntity();
-            articleRepository.save(article);
-            articles.add(article);
-        }
-        articleRepository.findById((long) -1).orElseThrow(() -> new IllegalArgumentException("Fail"));
-        return articles;
-    }
+//    public List<Article> createList(List<ArticleDto> dtos) {
+//        List<Article> articles = new ArrayList<>();
+//        for (ArticleDto articleDto : dtos) {
+//            Article article = articleDto.toEntity();
+//            articleRepository.save(article);
+//            articles.add(article);
+//        }
+//        articleRepository.findById((long) -1).orElseThrow(() -> new IllegalArgumentException("Fail"));
+//        return articles;
+//    }
 }

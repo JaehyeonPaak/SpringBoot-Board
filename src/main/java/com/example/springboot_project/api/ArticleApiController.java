@@ -32,10 +32,10 @@ public class ArticleApiController {
 
     // POST
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> create(@RequestBody ArticleDto dto) {
-        Article article = articleService.create(dto);
-        return article != null ?
-                ResponseEntity.status(HttpStatus.OK).body(article) :
+    public ResponseEntity<List<Article>> create(@RequestBody List<ArticleDto> dtos) {
+        List<Article> articles = articleService.create(dtos);
+        return articles != null ?
+                ResponseEntity.status(HttpStatus.OK).body(articles) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
@@ -56,15 +56,15 @@ public class ArticleApiController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build() ;
     }
 
-    //Transaction
-    @PostMapping("/api/transaction-test")
-    @Transactional
-    public ResponseEntity<List<Article>> transactionTest(@RequestBody List<ArticleDto> dtos) {
-        List<Article> articles = articleService.createList(dtos);
-
-        return (articles != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(articles) :
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
+//    //Transaction
+//    @PostMapping("/api/transaction-test")
+//    @Transactional
+//    public ResponseEntity<List<Article>> transactionTest(@RequestBody List<ArticleDto> dtos) {
+//        List<Article> articles = articleService.createList(dtos);
+//
+//        return (articles != null) ?
+//                ResponseEntity.status(HttpStatus.OK).body(articles) :
+//                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//    }
 
 }
