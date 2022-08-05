@@ -1,13 +1,13 @@
 package com.example.springboot_project.api;
 
 import com.example.springboot_project.dto.ArticleDto;
-import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.service.ArticleService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +23,8 @@ class ArticleApiControllerTest {
     void index_success() {
         // expected
         Article article1 = new Article(1L, "Billie eilish", "Happier than ever");
-        Article article2 = new Article(2L, "Lana del rey", "Chemtrails over the country club");
-        Article article3 = new Article(3L, "Lady gaga", "Hold my hand");
+        Article article2 = new Article(2L, "Lana del rey", "Bel air");
+        Article article3 = new Article(3L, "Anderson paak", "Leave the door open");
         List<Article> articles = new ArrayList<>();
         articles.add(article1);
         articles.add(article2);
@@ -41,7 +41,7 @@ class ArticleApiControllerTest {
     void show_success_idExist() {
         // expected
         Long id = 2L;
-        Article article = new Article(id, "Lana del rey", "Chemtrails over the country club");
+        Article article = new Article(id, "Lana del rey", "Bel air");
 
         // actual
         Article target = articleService.show(id);
@@ -64,6 +64,7 @@ class ArticleApiControllerTest {
     }
 
     @Test
+    @Transactional
     void create_success_withoutId() {
         // expected
         String title = "Sarah";
@@ -79,13 +80,14 @@ class ArticleApiControllerTest {
     }
 
     @Test
+    @Transactional
     void create_success_withId() {
-        // expected\
+        // expected
         Long id = 4L;
         String title = "Sarah";
         String content = "Angel";
         ArticleDto articleDto = new ArticleDto(id, title, content);
-        Article expected = new Article(id, title, content);
+        Article expected = null;
 
         // actual
         Article target = articleService.create(articleDto);
