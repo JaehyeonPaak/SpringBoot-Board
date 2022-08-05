@@ -146,6 +146,32 @@ class ArticleApiControllerTest {
     }
 
     @Test
-    void delete() {
+    @Transactional
+    void delete_success_withIdOnUrl() {
+        // expected
+        Long id = 1L;
+        String title = "Billie eilish";
+        String content = "Happier than ever";
+        Article expected = new Article(id, title, content);
+
+        // actual
+        Article target = articleService.delete(id);
+
+        // compare
+        assertEquals(expected.toString(), target.toString());
+    }
+
+    @Test
+    @Transactional
+    void delete_success_withNonExistIdOnUrl() {
+        // expected
+        Long id = 4L;
+        Article expected = null;
+
+        // actual
+        Article target = articleService.delete(id);
+
+        // compare
+        assertEquals(expected, target);
     }
 }
