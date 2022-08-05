@@ -77,4 +77,20 @@ class ArticleApiControllerTest {
         // compare
         assertEquals(expected.toString(), target.toString());
     }
+
+    @Test
+    void create_success_withId() {
+        // expected\
+        Long id = 4L;
+        String title = "Sarah";
+        String content = "Angel";
+        ArticleDto articleDto = new ArticleDto(id, title, content);
+        Article expected = new Article(id, title, content);
+
+        // actual
+        Article target = articleService.create(articleDto);
+
+        // compare
+        assertEquals(expected, target);
+    }
 }
