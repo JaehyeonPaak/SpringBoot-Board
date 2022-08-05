@@ -33,10 +33,12 @@ public class ArticleService {
 
     public Article update(Long id, ArticleDto dto) {
         Article target = articleRepository.findById(id).orElse(null);
-        Article articleEntity = dto.toEntity();
-        if(target != null && articleEntity.getId() == dto.getId()) {
-            target.put(articleEntity);
-            return articleRepository.save(target);
+        if(dto != null) {
+            Article articleEntity = dto.toEntity();
+            if(target != null && articleEntity.getId() == dto.getId()) {
+                target.put(articleEntity);
+                return articleRepository.save(target);
+            }
         }
         return null;
     }

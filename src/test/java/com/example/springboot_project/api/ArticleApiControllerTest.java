@@ -95,4 +95,57 @@ class ArticleApiControllerTest {
         // compare
         assertEquals(expected, target);
     }
+
+    @Test
+    @Transactional
+    void update_success_withoutId() {
+        // expected
+        Long id = 1L;
+        String title = "Lana del rey";
+        String content = "Chemtrails over the country club";
+        ArticleDto articleDto = new ArticleDto(null, title, content);
+        Article expected = new Article(id, title, content);
+
+        // actual
+        Article target = articleService.update(id, articleDto);
+
+        // compare
+        assertEquals(expected.toString(), target.toString());
+    }
+
+    @Test
+    @Transactional
+    void update_failed_withNonExistId() {
+        //expected
+        Long id = 4L;
+        String title = "Lana del rey";
+        String content = "Chemtrails over the country club";
+        ArticleDto articleDto = new ArticleDto(null, title, content);
+        Article expected = null;
+
+        // actual
+        Article target = articleService.update(id, articleDto);
+
+        // compare
+        assertEquals(expected, target);
+    }
+
+    @Test
+    @Transactional
+    void update_failed_withoutDto() {
+        // expected
+        Long id = 1L;
+        ArticleDto articleDto = null;
+        Article expected = null;
+
+        // actual
+        Article target = articleService.update(id, articleDto);
+
+        // compare
+        assertEquals(expected, target);
+    }
+
+    @Test
+    void delete() {
+    }
 }
