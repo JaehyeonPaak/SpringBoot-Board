@@ -11,5 +11,5 @@ public interface CommentsRepository extends JpaRepository<Comments, Long> {
     List<Comments> findByArticleId(@Param("article_id") Long article_id);
 
     // find all comment of certain username
-    List<Comments> findByUsername(String username);
+    List<Comments> findByUsername(@Param("username") String username);
 }
