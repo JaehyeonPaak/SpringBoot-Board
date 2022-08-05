@@ -1,5 +1,6 @@
 package com.example.springboot_project.api;
 
+import com.example.springboot_project.dto.ArticleDto;
 import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.service.ArticleService;
@@ -31,7 +32,7 @@ public class ArticleApiController {
 
     // POST
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> create(@RequestBody ArticleForm dto) {
+    public ResponseEntity<Article> create(@RequestBody ArticleDto dto) {
         Article article = articleService.create(dto);
         return article != null ?
                 ResponseEntity.status(HttpStatus.OK).body(article) :
@@ -40,7 +41,7 @@ public class ArticleApiController {
 
     // PUT
     @PutMapping("/api/articles/{id}")
-    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleForm dto) {
+    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleDto dto) {
         Article article = articleService.update(id, dto);
         return (article != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(article) :

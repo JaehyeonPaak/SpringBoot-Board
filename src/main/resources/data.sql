@@ -1,9 +1,9 @@
-INSERT
-    INTO ARTICLE (ID, TITLE, CONTENT)
-    VALUES (1, 'Billie eilish', 'Happier than ever');
-INSERT
-    INTO ARTICLE (ID, TITLE, CONTENT)
-    VALUES (2, 'Lana del rey', 'Chemtrails over the country club');
-INSERT
-    INTO ARTICLE (ID, TITLE, CONTENT)
-    VALUES (3, 'Lady gaga', 'Hold my hand');
+insert
+    into article (id, title, content)
+    values (null, 'Bille eilish', 'Happier than ever');
+insert
+    into article (id, title, content)
+    values (null, 'Lana del rey', 'Bel air');
+insert
+    into article (id, title, content)
+    values (null, 'Anderson paak', 'Leave the door open');

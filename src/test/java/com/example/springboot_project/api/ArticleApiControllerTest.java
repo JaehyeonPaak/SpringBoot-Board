@@ -1,5 +1,6 @@
 package com.example.springboot_project.api;
 
+import com.example.springboot_project.dto.ArticleDto;
 import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.service.ArticleService;
@@ -67,11 +68,11 @@ class ArticleApiControllerTest {
         // expected
         String title = "Sarah";
         String content = "Angel";
-        ArticleForm articleForm = new ArticleForm(null, title, content);
+        ArticleDto articleDto = new ArticleDto(null, title, content);
         Article expected = new Article(4L, title, content);
 
         // actual
-        Article target = articleService.create(articleForm);
+        Article target = articleService.create(articleDto);
 
         // compare
         assertEquals(expected.toString(), target.toString());

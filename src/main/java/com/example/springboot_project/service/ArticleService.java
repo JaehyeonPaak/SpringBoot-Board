@@ -1,5 +1,6 @@
 package com.example.springboot_project.service;
 
+import com.example.springboot_project.dto.ArticleDto;
 import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.repository.ArticleRepository;
@@ -22,7 +23,7 @@ public class ArticleService {
         return articleRepository.findById(id).orElse(null);
     }
 
-    public Article create(ArticleForm dto) {
+    public Article create(ArticleDto dto) {
         Article article = dto.toEntity();
         if (dto.getId() != null) {
             return null;
@@ -30,7 +31,7 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    public Article update(Long id, ArticleForm dto) {
+    public Article update(Long id, ArticleDto dto) {
         Article target = articleRepository.findById(id).orElse(null);
         Article articleEntity = dto.toEntity();
         if(target != null && articleEntity.getId() == dto.getId()) {

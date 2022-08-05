@@ -29,22 +29,17 @@ public class ArticleController {
     @PostMapping("/articles/create")
     public String createArticle(ArticleForm form) {
 
-        log.info(form.toString());
-
         // 1. Convert form to entity
         Article article = form.toEntity();
-        log.info(article.toString());
 
         // 2. Let Repository save entity in DB
         Article saved = articleRepository.save(article);
-        log.info(saved.toString());
 
         return "redirect:/articles/" + saved.getId();
     }
 
     @GetMapping("/articles/{id}")
     public String show(@PathVariable Long id, Model model) {
-        log.info("id = " + id);
 
         // 1. find data through Repository with id
         Article articleEntity = articleRepository.findById(id).orElse(null);
