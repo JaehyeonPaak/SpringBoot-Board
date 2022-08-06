@@ -21,38 +21,38 @@ public class ArticleApiController {
 
     // GET
     @GetMapping("/api/articles")
-    public List<Article> index() {
+    public List<ArticleDto> index() {
         return articleService.index();
     }
 
     @GetMapping("/api/articles/{id}")
-    public Article show(@PathVariable Long id) {
+    public ArticleDto show(@PathVariable Long id) {
         return articleService.show(id);
     }
 
     // POST
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> create(@RequestBody ArticleDto dto) {
-        Article article = articleService.create(dto);
-        return article != null ?
-                ResponseEntity.status(HttpStatus.OK).body(article) :
+    public ResponseEntity<ArticleDto> create(@RequestBody ArticleDto dto) {
+        ArticleDto articleDto = articleService.create(dto);
+        return articleDto != null ?
+                ResponseEntity.status(HttpStatus.OK).body(articleDto) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     // PUT
     @PutMapping("/api/articles/{id}")
-    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleDto dto) {
-        Article article = articleService.update(id, dto);
-        return (article != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(article) :
+    public ResponseEntity<ArticleDto> update(@PathVariable Long id, @RequestBody ArticleDto dto) {
+        ArticleDto articleDto = articleService.update(id, dto);
+        return (articleDto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(articleDto) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     // DELETE
     @DeleteMapping("/api/articles/{id}")
-    public ResponseEntity<Article> delete(@PathVariable Long id) {
-        Article article = articleService.delete(id);
-        return (article != null) ?
+    public ResponseEntity<ArticleDto> delete(@PathVariable Long id) {
+        ArticleDto articleDto = articleService.delete(id);
+        return (articleDto != null) ?
                 ResponseEntity.status(HttpStatus.OK).build() :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build() ;
     }

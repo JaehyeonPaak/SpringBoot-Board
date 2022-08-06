@@ -4,50 +4,64 @@ import com.example.springboot_project.dto.ArticleDto;
 import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.repository.ArticleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ArticleService {
 
     @Autowired
     private ArticleRepository articleRepository;
 
-    public List<Article> index() {
-        return (List<Article>) articleRepository.findAll();
+    public List<ArticleDto> index() {
+        // List of article entity
+        List<Article> articles = (List<Article>) articleRepository.findAll();
+        // List of article dto
+        List<ArticleDto> articleDtos = new ArrayList<>();
+        for (Article e : articles) {
+            articleDtos.add(ArticleDto.create(e));
+        }
+        return articleDtos;
     }
 
-    public Article show(Long id) {
-        return articleRepository.findById(id).orElse(null);
+    public ArticleDto show(Long id) {
+        Article article = articleRepository.findById(id).orElse(null);
+        ArticleDto articleDto = ArticleDto.create(article);
+        return articleDto;
     }
 
-    public Article create(ArticleDto dto) {
-        Article article = dto.toEntity();
+    public ArticleDto create(ArticleDto dto) {
+        Article article = articleRepository.save(dto.toEntity());
+        ArticleDto articleDto = ArticleDto.create(article);
         if (dto.getId() != null) {
             return null;
         }
-        return articleRepository.save(article);
+        return articleDto;
     }
 
-    public Article update(Long id, ArticleDto dto) {
+    public ArticleDto update(Long id, ArticleDto dto) {
         Article target = articleRepository.findById(id).orElse(null);
         if(dto != null) {
             Article articleEntity = dto.toEntity();
             if(target != null && articleEntity.getId() == dto.getId()) {
                 target.put(articleEntity);
-                return articleRepository.save(target);
+                Article article = articleRepository.save(target);
+                return ArticleDto.create(article);
             }
         }
         return null;
     }
 
-    public Article delete(Long id) {
+    public ArticleDto delete(Long id) {
         Article target = articleRepository.findById(id).orElse(null);
         if(target != null) {
             articleRepository.delete(target);
-            return target;
+            return ArticleDto.create(target);
         }
         return null;
     }
