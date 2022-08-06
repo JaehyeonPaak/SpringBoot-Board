@@ -1,6 +1,7 @@
 package com.example.springboot_project.dto;
 
 import com.example.springboot_project.entity.Article;
+import com.example.springboot_project.entity.Comments;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,9 +15,14 @@ public class CommentsDto {
 
     private Long id;
 
-    private Article article;
+    private Long article_id;
 
     private String username;
 
     private String body;
+
+    public static CommentsDto create(Comments comments) {
+        return new CommentsDto(comments.getId(), comments.getArticle().getId(), comments.getUsername(), comments.getBody());
+    }
+
 }

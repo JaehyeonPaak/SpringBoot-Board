@@ -1,5 +1,6 @@
 package com.example.springboot_project.entity;
 
+import com.example.springboot_project.dto.CommentsDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,7 +9,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @ToString
 public class Comments {
 
@@ -25,4 +25,8 @@ public class Comments {
 
     @Column
     private String body;
+
+    public static Comments create(Article article, CommentsDto commentsDto) {
+        return new Comments(commentsDto.getId(), article, commentsDto.getUsername(), commentsDto.getBody());
+    }
 }

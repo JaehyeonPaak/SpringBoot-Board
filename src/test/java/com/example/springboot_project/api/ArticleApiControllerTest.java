@@ -70,7 +70,7 @@ class ArticleApiControllerTest {
         String title = "Sarah";
         String content = "Angel";
         ArticleDto articleDto = new ArticleDto(null, title, content);
-        Article expected = new Article(4L, title, content);
+        ArticleDto expected = new ArticleDto(4L, title, content);
 
         // actual
         ArticleDto target = articleService.create(articleDto);
