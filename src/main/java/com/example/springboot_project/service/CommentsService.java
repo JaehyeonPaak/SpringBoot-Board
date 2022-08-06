@@ -36,8 +36,33 @@ public class CommentsService {
         Comments comments = Comments.create(article, commentsDto);
         // save comments entity into DB
         Comments target = commentsRepository.save(comments);
-        // convert comments entity to DTO
-        CommentsDto commentsDtoFinal = CommentsDto.create(comments);
-        return commentsDtoFinal;
+        // convert comments entity to DTO and return
+        return CommentsDto.create(comments);
+    }
+
+    public CommentsDto update(Long id, CommentsDto dto) {
+        // find target from comments DB by id
+        Comments target = commentsRepository.findById(id).orElse(null);
+        if(target != null) {
+            if((target.getArticle().getId() == dto.getArticle_id()) && (id == dto.getId())) {
+                // modify target with comments DTO
+                target.put(dto);
+                // create comments entity and save into DB
+                Comments comments = commentsRepository.save(target);
+                // convert created comments entity into comments and return
+                return CommentsDto.create(comments);
+            }
+        }
+        return null;
+    }
+
+    public CommentsDto delete(Long id) {
+        // find target from comments DB by id
+        Comments target = commentsRepository.findById(id).orElse(null);
+        if(target != null) {
+            commentsRepository.delete(target);
+            return CommentsDto.create(target);
+        }
+        return null;
     }
 }

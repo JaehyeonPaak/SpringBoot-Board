@@ -29,4 +29,13 @@ public class Comments {
     public static Comments create(Article article, CommentsDto commentsDto) {
         return new Comments(commentsDto.getId(), article, commentsDto.getUsername(), commentsDto.getBody());
     }
+
+    public void put(CommentsDto dto) {
+        if(dto.getUsername() != null) {
+            this.username = dto.getUsername();
+        }
+        if(dto.getBody() != null) {
+            this.body = dto.getBody();
+        }
+    }
 }

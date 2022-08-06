@@ -32,6 +32,22 @@ public class CommentsApiController {
                 ResponseEntity.status(HttpStatus.OK).body(commentsDto) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
     // PUT
+    @PutMapping("/api/comments/{id}")
+    public ResponseEntity<CommentsDto> update(@PathVariable Long id, @RequestBody CommentsDto dto) {
+        CommentsDto commentsDto = commentsService.update(id, dto);
+        return (commentsDto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(commentsDto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
     // DELETE
+    @DeleteMapping("/api/comments/{id}")
+    public ResponseEntity<CommentsDto> delete(@PathVariable Long id) {
+        CommentsDto commentsDto = commentsService.delete(id);
+        return (commentsDto != null) ?
+                ResponseEntity.status(HttpStatus.OK).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }
