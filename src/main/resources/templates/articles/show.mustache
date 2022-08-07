@@ -15,6 +15,15 @@
             <td>{{title}}</td>
             <td>{{content}}</td>
         </tr>
+        <tbody>
+        {{#comments}}
+            <tr>
+                <th>{{id}}</th>
+                <td>{{username}}</td>
+                <td>{{body}}</td>
+            </tr>
+        {{/comments}}
+        </tbody>
     </tbody>
     {{/article}}
 </table>

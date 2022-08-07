@@ -3,11 +3,9 @@ package com.example.springboot_project.dto;
 import com.example.springboot_project.entity.Article;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @ToString
 public class ArticleForm {
@@ -17,6 +15,6 @@ public class ArticleForm {
     private String content;
 
     public Article toEntity() {
-        return new Article(id, title, content, null);
+        return new Article(id, title, content);
     }
 }
