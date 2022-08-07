@@ -15,15 +15,6 @@
             <td>{{title}}</td>
             <td>{{content}}</td>
         </tr>
-        <tbody>
-        {{#comments}}
-            <tr>
-                <th>{{id}}</th>
-                <td>{{username}}</td>
-                <td>{{body}}</td>
-            </tr>
-        {{/comments}}
-        </tbody>
     </tbody>
     {{/article}}
 </table>
@@ -39,5 +30,7 @@
 <button>
     <a href="/articles/delete/{{article.id}}">Delete</a>
 </button>
+
+{{>comments/commentsList}}
 
 {{>layouts/footer}}

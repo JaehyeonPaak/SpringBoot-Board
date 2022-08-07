@@ -1,0 +1,26 @@
+<div class="card m-2">
+    <div class="card-body">
+        <form>
+            <div class="mb-1">
+                <label class="form-label">Username</label>
+                <input class="form-control" id="new-comment-username">
+            </div>
+            <div class="mb-1">
+                <label class="form-label">Body</label>
+                <input class="form-control" id="new-comment-body">
+            </div>
+
+            {{#article}}
+                <input type="hidden" id="new-comment-article-id" value="{{id}}">
+            {{/article}}
+
+            <button type="button" class="btn btn-primary" id="new-comment-create-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    {
+        const commentCreateBtn = document.querySelector("#new-comment-create-btn");
+    }
+</script>

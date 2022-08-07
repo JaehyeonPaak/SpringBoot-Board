@@ -1,9 +1,11 @@
 package com.example.springboot_project.controller;
 
+import com.example.springboot_project.dto.ArticleDto;
 import com.example.springboot_project.dto.ArticleForm;
 import com.example.springboot_project.dto.CommentsDto;
 import com.example.springboot_project.entity.Article;
 import com.example.springboot_project.repository.ArticleRepository;
+import com.example.springboot_project.service.ArticleService;
 import com.example.springboot_project.service.CommentsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ArticleController {
     private ArticleRepository articleRepository;
 
     @Autowired
+    private ArticleService articleService;
+
+    @Autowired
     private CommentsService commentsService;
 
     @GetMapping("/articles/new")
@@ -33,55 +38,51 @@ public class ArticleController {
     @PostMapping("/articles/create")
     public String createArticle(ArticleForm form) {
 
-        log.info(form.toString());
+        // convert form into article DTO
+        ArticleDto articleDto = ArticleDto.create(form.toEntity());
 
-        // 1. Convert form to entity
-        Article article = form.toEntity();
-        log.info("create entity " + article.toString());
+        // save article DTO into DB through Service
+        ArticleDto created = articleService.create(articleDto);
 
-        // 2. Let Repository save article entity in DB
-        Article saved = articleRepository.save(article);
-        log.info(saved.toString());
-
-        return "redirect:/articles/" + saved.getId();
+        return "redirect:/articles/" + created.getId();
     }
 
     @GetMapping("/articles/{id}")
     public String show(@PathVariable Long id, Model model) {
 
-        // 1. find article entity from Repository with id, find comments DTO
-        Article articleEntity = articleRepository.findById(id).orElse(null);
+        // find article entity from Repository with id, find comments DTO
+        ArticleDto articleDto = articleService.show(id);
         List<CommentsDto> commentsDtos = commentsService.comments(id);
 
-        // 2. register article and comments DTO in a model
-        model.addAttribute("article", articleEntity);
+        // register article and comments DTO in a model
+        model.addAttribute("article", articleDto);
         model.addAttribute("comments", commentsDtos);
 
-        // 3. set a view page
+        // set a view page
         return "articles/show";
     }
 
     @GetMapping("/articles")
     public String index(Model model) {
 
-        // 1. find all the data through Repository with id
-        List<Article> articleEntityList = (List<Article>) articleRepository.findAll();
+        // find all the data through Repository with id
+        List<ArticleDto> articleDtos = articleService.index();
 
-        // 2. register the data in a model
-        model.addAttribute("articleList", articleEntityList);
+        // register the data in a model
+        model.addAttribute("articleList", articleDtos);
 
-        // 3. set a view page
+        // set a view page
         return "articles/index";
     }
 
     @GetMapping("/articles/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
 
-        // 1. find data to edit from Repository
-        Article articleEntity = articleRepository.findById(id).orElse(null);
+        // find article DTO from Service to edit
+        ArticleDto articleDto = articleService.show(id);
 
-        // 2. register the data in a model
-        model.addAttribute("article", articleEntity);
+        // register article DTO in a model
+        model.addAttribute("article", articleDto);
 
         return "articles/edit";
     }
@@ -89,40 +90,26 @@ public class ArticleController {
     @PostMapping("/articles/update")
     public String update(ArticleForm form, Model model) {
 
-        log.info("Update form " + form.toString());
+        // convert form into article DTO
+        ArticleDto articleDto = ArticleDto.create(form.toEntity());
 
-        // 1. convert DTO to Entity
-        Article articleEntity = form.toEntity();
-        log.info("Update article entity " + articleEntity.toString());
+        // update original article DTO with new one through Service
+        ArticleDto result = articleService.update(articleDto.getId(), articleDto);
 
-        // 2. find the data from DB by id
-        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
-
-        // 3. update the data in DB via JPA
-        if(target != null) {
-            articleRepository.save(articleEntity);
-        }
-
-        // 4. set a view
-        return "redirect:/articles/" + articleEntity.getId();
+        // set a view
+        return "redirect:/articles/" + result.getId();
     }
 
     @GetMapping("/articles/delete/{id}")
     public String delete(@PathVariable Long id, RedirectAttributes rttr) {
 
-        // 1. find the data from DB by id
-        Article target = articleRepository.findById(id).orElse(null);
+        // delete id matching article DTO through Service
+        articleService.delete(id);
 
-        // 2. delete the data using Repository
-        if(target != null) {
-            articleRepository.delete(target);
-        }
+        // add alerting message
+        rttr.addFlashAttribute( "msg", "The article has been deleted!");
 
-        // 3. add alerting message
-        String message = "The article has been deleted!";
-        rttr.addFlashAttribute( "msg", message);
-
-        // 4. set a view
+        // set a view
         return "redirect:/articles";
     }
 
