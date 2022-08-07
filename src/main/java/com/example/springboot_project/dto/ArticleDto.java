@@ -21,6 +21,6 @@ public class ArticleDto {
     }
 
     public Article toEntity() {
-        return new Article(id, title, content);
+        return new Article(id, title, content, null);
     }
 }

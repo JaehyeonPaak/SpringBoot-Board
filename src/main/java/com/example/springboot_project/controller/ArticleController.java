@@ -22,9 +22,6 @@ import java.util.List;
 @Slf4j
 public class ArticleController {
     @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
     private ArticleService articleService;
 
     @Autowired

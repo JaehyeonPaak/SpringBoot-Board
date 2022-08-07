@@ -28,9 +28,9 @@ public class Article {
     @Column
     private String content;
 
-//    @ToString.Exclude
-//    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Comments> comments = new HashSet<>();
+    @ToString.Exclude
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comments> comments = new HashSet<>();
 
     public void put(Article articleEntity) {
         if(articleEntity.title != null) {
